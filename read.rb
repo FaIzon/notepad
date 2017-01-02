@@ -1,13 +1,13 @@
 require_relative 'post.rb'
+require_relative 'memo.rb'
 require_relative 'link.rb'
 require_relative 'task.rb'
-require_relative 'memo.rb'
 
 require 'optparse'
 
-# Все наши опции будут записаны сюда
+
 options = {}
-# заведем нужные нам опции
+
 OptionParser.new do |opt|
   opt.banner = 'Usage: read.rb [options]'
 
@@ -22,16 +22,19 @@ OptionParser.new do |opt|
 
 end.parse!
 
-result = Post.find(options[:limit], options[:type], options[:id])
+if options.key?(:id)
+  result = Post.find_by_id(options[:id])
+else
+  result = Post.find_all(options[:limit], options[:type])
+end
 
-if result.is_a? Post # показываем конкретный пост
+if result.is_a? Post
   puts "Запись #{result.class.name}, id = #{options[:id]}"
-  # выведем весь пост на экран и закроемся
   result.to_strings.each do |line|
     puts line
   end
 
-else # показываем таблицу результатов
+else
 
   print "| id\t| @type\t|  @created_at\t\t\t|  @text \t\t\t| @url\t\t| @due_date \t "
 

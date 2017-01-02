@@ -7,7 +7,6 @@ puts "Версия с SQLite"
 puts "Запишите что-нибудь?"
 
 choices = Post.post_types.keys
-
 choice = -1
 
 until choice >= 0 && choice < choices.size
